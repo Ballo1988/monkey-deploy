@@ -3,18 +3,19 @@
  @import "jquery-ui.css";
 
  @import
- "config/variables.scss",
- "components/buttons.scss",
- "components/login.scss",
- "components/links.scss",
- "components/top-message.scss",
- "components/confirmation.scss",
- "components/registrations.scss",
- "components/passwords.scss",
- "components/banner.scss",
- "components/products.scss",
- "layout/footer.scss",
- "layout/navbar.scss";
+ "config/variables",
+ "components/buttons",
+ "components/login",
+ "components/links",
+ "components/top-message",
+ "components/confirmation",
+ "components/registrations",
+ "components/passwords",
+ "components/banner",
+ "components/products",
+ "components/cart",
+ "layout/footer",
+ "layout/navbar";
 
 body {
   font-family: $font-family-main;
