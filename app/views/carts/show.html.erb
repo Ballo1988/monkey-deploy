@@ -5,7 +5,8 @@
       <%= form_tag checkout_path, method: :post, class: 'checkout-form' do %>
         <div class="mb-3">
           <label for="address_id" class="form-label">Select Address:</label>
-          <%= select_tag 'address_id', options_from_collection_for_select(@address_options, 'id', 'full_address'), class: 'form-control' %>
+          <%= select_tag 'address_id' , options_from_collection_for_select(@address_options, 'id' , 'full_address' ),
+            class: 'form-control' %>
         </div>
 
         <h2 class="mt-5">Order Summary:</h2>
@@ -21,36 +22,49 @@
               </tr>
             </thead>
             <tbody>
-              <% total_amount = 0 %>
-              <% @cart.line_items.each do |line_item| %>
-                <tr>
-                  <td class="align-middle">
-                    <% if line_item.product.images.first %>
-                      <%= image_tag rails_blob_path(line_item.product.images.first, disposition: "attachment", only_path: true), class: "img-thumbnail img-fluid", width: "100", height: "100" %>
-                    <% else %>
-                      No Image
-                    <% end %>
-                  </td>
-                  <td><%= line_item.product.name %></td>
-                  <td><%= number_to_currency(line_item.product.total_price) %></td>
-                  <td class="text-center"><%= line_item.quantity %></td>
-                  <% item_total = line_item.product.total_price * line_item.quantity %>
-                  <td><%= number_to_currency(item_total) %></td>
-                  <% total_amount += item_total %>
-                </tr>
-              <% end %>
+              <% total_amount=0 %>
+                <% @cart.line_items.each do |line_item| %>
+                  <tr>
+                    <td class="align-middle">
+                      <% if line_item.product.images.first %>
+                        <%= image_tag rails_blob_path(line_item.product.images.first, disposition: "attachment" ,
+                          only_path: true), class: "img-thumbnail img-fluid" , width: "100" , height: "100" %>
+                          <% else %>
+                            No Image
+                            <% end %>
+                    </td>
+                    <td>
+                      <%= line_item.product.name %>
+                    </td>
+                    <td>
+                      <%= number_to_currency(line_item.product.total_price) %>
+                    </td>
+                    <td class="text-center">
+                      <%= line_item.quantity %>
+                    </td>
+                    <% item_total=line_item.product.total_price * line_item.quantity %>
+                      <td>
+                        <%= number_to_currency(item_total) %>
+                      </td>
+                      <% total_amount +=item_total %>
+                  </tr>
+                  <% end %>
             </tbody>
           </table>
         </div>
 
         <div class="d-flex justify-content-center justify-content-md-end bg-light p-3">
-          <p class="text-uppercase fw-bold">Total Price: <%= number_to_currency(total_amount) %></p>
+          <p class="text-uppercase fw-bold">Total Price: <%= number_to_currency(total_amount) %>
+          </p>
         </div>
 
-        <div class="d-flex justify-content-center my-3">
-          <%= submit_tag 'Place Order', class: 'btn btn-primary text-uppercase fw-bold col-8 col-md-4' %>
+        <div class="d-flex justify-content-center my-3" data-controller="stripe" >
+          <%= submit_tag 'Place Order' , class: 'btn btn-primary text-uppercase fw-bold col-8 col-md-4' %>
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="<%= Rails.application.credentials.development[:publishable_key] %>" data-description="Unique payment"
+              data-amount="<%= @total_price %>" data-locale="auto"></script>
         </div>
-      <% end %>
+        <% end %>
     </div>
   </div>
 </div>

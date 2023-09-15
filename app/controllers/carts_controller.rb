@@ -7,13 +7,13 @@ class CartsController < ApplicationController
   def add_to_cart
     @cart = current_user.cart || current_user.create_cart
     line_item = @cart.line_items.find_by(product: @product)
-    
+
     if line_item
       line_item.quantity += 1
     else
       line_item = @cart.line_items.build(product: @product, quantity: 1)
     end
-    
+
     if line_item.save
       redirect_to cart_path, notice: 'Product added to cart.'
     else
@@ -49,7 +49,7 @@ class CartsController < ApplicationController
       redirect_to orders_path, notice: 'Order placed successfully.'
     end
     OrderMailer.order_mail(@order).deliver_now
-  end  
+  end
 
   def index
     @line_items = @cart.line_items.includes(:product) if @cart
